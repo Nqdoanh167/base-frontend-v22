@@ -1,0 +1,23 @@
+@if (biz(); as biz) {
+  <appvn-logo [biz]="biz" [collapsed]="collapsed()" />
+}
+
+<nav class="menu-items">
+  @for (item of menu; track item.id) {
+    <a class="menu-item" [routerLink]="item.route" routerLinkActive="active" [title]="collapsed() ? item.label : ''">
+      <i class="menu-icon" [class]="item.icon" aria-hidden="true"></i>
+      <span class="item-label">{{ item.label }}</span>
+    </a>
+  }
+</nav>
+
+<div class="sidebar-footer">
+  <button
+    type="button"
+    class="toggle-btn"
+    [attr.aria-label]="collapsed() ? 'Mở rộng menu' : 'Thu gọn menu'"
+    (click)="collapsed.set(!collapsed())"
+  >
+    <i class="toggle-btn__icon fa-solid fa-angles-left" aria-hidden="true"></i>
+  </button>
+</div>

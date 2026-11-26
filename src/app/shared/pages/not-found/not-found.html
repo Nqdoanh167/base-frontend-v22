@@ -1,0 +1,9 @@
+<div class="min-vh-100 d-flex flex-column align-items-center justify-content-center gap-2 p-3 text-center">
+  @if (authError(); as error) {
+    <h1 class="fs-xl fw-semibold mb-0">Chưa đăng nhập được</h1>
+    <p class="text-danger mb-0 text-break">{{ error }}</p>
+  } @else {
+    <h1 class="fs-xl fw-semibold mb-0">404</h1>
+    <p class="text-secondary mb-0">Không tìm thấy trang.</p>
+  }
+</div>

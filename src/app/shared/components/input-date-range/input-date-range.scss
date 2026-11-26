@@ -1,0 +1,39 @@
+:host {
+  display: block;
+  position: relative;
+}
+
+.form-control {
+  cursor: pointer;
+  padding-inline: 32px;
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  color: var(--bs-gray-400);
+}
+
+.calendar {
+  left: 12px;
+  pointer-events: none;
+}
+
+.clear {
+  right: 12px;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+// Lịch render ở `body` (container="body") → ::ng-deep, đổi màu theme-blue sang màu primary.
+::ng-deep .theme-blue {
+  .bs-datepicker-head,
+  .bs-datepicker-predefined-btns button.selected,
+  .bs-datepicker-body table td .selected,
+  .bs-datepicker-body table td.selected span {
+    background-color: var(--bs-primary) !important;
+  }
+}

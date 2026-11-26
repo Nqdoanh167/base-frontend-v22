@@ -1,0 +1,5 @@
+<app-main-sidebar [(collapsed)]="collapsed" />
+
+<main class="content" [class.collapsed]="collapsed()">
+  <router-outlet />
+</main>

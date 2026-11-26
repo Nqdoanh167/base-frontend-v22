@@ -1,0 +1,87 @@
+<ng-select
+  #select
+  class="option-white-space-unset"
+  [class.is-invalid]="invalid()"
+  [items]="items()"
+  [bindLabel]="bindLabel()"
+  [bindValue]="bindValue()"
+  [multiple]="multiple()"
+  [closeOnSelect]="!multiple()"
+  [clearable]="clearable()"
+  [searchable]="false"
+  [loading]="loading()"
+  [placeholder]="placeholder()"
+  [notFoundText]="notFoundText()"
+  [appendTo]="appendTo()"
+  [labelForId]="labelForId()"
+  [ngModel]="value()"
+  [disabled]="disabled()"
+  (ngModelChange)="onModelChange($event)"
+  (blur)="onTouched()"
+  (search)="searchChange.emit($event)"
+  (scrollToEnd)="scrollToEnd.emit()"
+  (open)="opened.emit()"
+>
+  @if (searchable()) {
+    <ng-template ng-header-tmp>
+      <div class="position-relative">
+        <i class="fa fa-search position-absolute top-50 start-0 translate-middle-y ms-2 text-muted pe-none fs-xs"></i>
+        <input
+          #searchInput
+          type="text"
+          class="form-control form-control-sm ps-4"
+          [placeholder]="searchPlaceholder()"
+          [attr.aria-label]="searchPlaceholder()"
+          [value]="select.searchTerm"
+          (input)="select.filter(searchInput.value)"
+          (keydown)="onSearchKeydown($event)"
+        />
+      </div>
+    </ng-template>
+  }
+  <ng-template ng-option-tmp let-item="item">
+    <div class="d-flex align-items-center gap-2 min-w-0">
+      <ng-container *ngTemplateOutlet="mediaTpl; context: { $implicit: item, size: 20 }" />
+      <ng-container *ngTemplateOutlet="optionTemplate() || labelTpl; context: { $implicit: item }" />
+    </div>
+  </ng-template>
+  <ng-template ng-label-tmp let-item="item">
+    <span class="d-inline-flex align-items-center gap-1 mw-100">
+      <ng-container *ngTemplateOutlet="mediaTpl; context: { $implicit: item, size: 20 }" />
+      <span class="text-truncate">
+        <ng-container *ngTemplateOutlet="optionTemplate() || labelTpl; context: { $implicit: item }" />
+      </span>
+    </span>
+  </ng-template>
+  <ng-template ng-multi-label-tmp let-items="items">
+    @for (item of items.slice(0, maxLabels()); track $index) {
+      <div class="ng-value" [style.max-width.px]="100" [title]="item[bindLabel()]">
+        <span class="ng-value-label d-flex align-items-center gap-1 min-w-0">
+          <ng-container *ngTemplateOutlet="mediaTpl; context: { $implicit: item, size: 16 }" />
+          <span class="text-truncate">{{ item[bindLabel()] }}</span>
+        </span>
+      </div>
+    }
+    @if (items.length > maxLabels()) {
+      <span class="align-self-center fs-sm fw-medium text-secondary">+{{ items.length - maxLabels() }}</span>
+    }
+  </ng-template>
+  @if (footerTemplate(); as tpl) {
+    <ng-template ng-footer-tmp>
+      <ng-container *ngTemplateOutlet="tpl" />
+    </ng-template>
+  }
+</ng-select>
+
+<ng-template #labelTpl let-item>
+  <span>{{ item[bindLabel()] }}</span>
+</ng-template>
+
+<ng-template #mediaTpl let-item let-size="size">
+  @let media = item | selectMedia;
+  @if (media?.src) {
+    <img [src]="media.src" [width]="size" [height]="size" class="rounded object-fit-cover flex-shrink-0" alt="" />
+  } @else if (media?.cls) {
+    <i class="flex-shrink-0 text-center" [class]="media.cls" [style.font-size.px]="12" aria-hidden="true"></i>
+  }
+</ng-template>

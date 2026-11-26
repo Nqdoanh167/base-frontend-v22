@@ -1,0 +1,63 @@
+@use 'styles/variable' as *;
+
+:host {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  display: block;
+}
+
+.app-main-header {
+  min-height: 56px;
+  padding: 8px 20px;
+  background-color: $white;
+  border-bottom: 1px solid $border-color;
+}
+
+.app-main-header__avatar-btn {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.app-main-header__avatar {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid $gray-100;
+  object-fit: cover;
+  transition: border-color 0.2s ease;
+
+  &--initial {
+    background-color: $primary;
+    color: $white;
+    font-weight: 700;
+  }
+
+  .app-main-header__avatar-btn:hover & {
+    border-color: $primary;
+  }
+}
+
+.app-main-header__biz-logo {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid $white;
+  background-color: $white;
+  object-fit: cover;
+}
+
+// Không dùng Popper của Bootstrap → tự đặt vị trí dưới avatar, căn phải.
+.dropdown-menu {
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+  min-width: 220px;
+}

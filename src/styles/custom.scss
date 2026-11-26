@@ -1,0 +1,381 @@
+@use 'styles/variable' as *;
+
+$_font-sizes: (
+  'xs': $font-size-xs,
+  'sm': $font-size-sm,
+  'base': $font-size-base,
+  'md': $font-size-md,
+  'lg': $font-size-lg,
+  'xl': $font-size-xl,
+);
+
+@each $name, $size in $_font-sizes {
+  .fs-#{$name} {
+    font-size: $size;
+  }
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// Flex item chứa text cần co lại được để `text-truncate` hoạt động.
+.min-w-0 {
+  min-width: 0;
+}
+
+.form-control {
+  background-color: rgba($gray-100, 0.9);
+  border: 1px solid $gray-200;
+  border-radius: $border-radius;
+  font-size: $font-size-base;
+  color: $gray-800;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+
+  &:not(textarea) {
+    height: 34px;
+  }
+
+  &::placeholder {
+    color: $gray-400;
+  }
+
+  &:focus {
+    background-color: $white;
+    border-color: $blue-bright;
+    box-shadow: 0 0 0 3px rgba($blue-bright, 0.15);
+    outline: none;
+  }
+}
+
+// Addon cao theo `.form-control` (34px) — padding dọc mặc định của Bootstrap làm addon cao hơn input → lệch.
+.input-group:not(:has(textarea)) > .input-group-text {
+  padding-top: 0;
+  padding-bottom: 0;
+  border-color: $gray-200;
+  font-size: $font-size-base;
+}
+
+.form-label,
+.form-check-label {
+  font-size: $font-size-sm;
+  font-weight: 500;
+  color: $gray-600;
+  margin-bottom: 2px;
+}
+
+// Checkbox/switch dùng chung 1 cỡ 18px (khớp `app-table`).
+.form-check-input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  cursor: pointer;
+}
+
+.form-switch .form-check-input {
+  width: 32px;
+}
+
+// Không gõ inline → bỏ min-width 40px của .ng-input, tránh rớt dòng làm ô cao lên.
+.ng-select.ng-select-multiple:not(.ng-select-searchable) .ng-select-container .ng-value-container .ng-input {
+  min-width: 0;
+}
+
+app-select .ng-value {
+  pointer-events: none;
+}
+
+.ng-select {
+  font-size: $font-size-base;
+  line-height: 1.5;
+
+  .ng-select-container {
+    box-sizing: border-box;
+    min-height: 34px !important;
+    align-items: center;
+    background-color: rgba($gray-100, 0.9) !important;
+    border: 1px solid $gray-200 !important;
+    border-radius: $border-radius !important;
+    color: $gray-800;
+    box-shadow: none !important;
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease,
+      background-color 0.15s ease;
+
+    .ng-value-container {
+      align-items: center;
+      padding-left: 12px !important;
+      padding-top: 0 !important;
+      min-height: 0;
+
+      .ng-placeholder {
+        color: $gray-400;
+        font-size: $font-size-base;
+        line-height: 1.5;
+        margin: 0;
+        padding: 0 !important;
+      }
+
+      .ng-value {
+        font-size: $font-size-base !important;
+        line-height: 1.5;
+        color: $gray-800;
+        margin: 0;
+
+        // label template thường bọc <div> — ép cùng size với input
+        div,
+        span {
+          font-size: $font-size-base !important;
+          line-height: 1.5;
+          font-weight: 400;
+        }
+      }
+
+      .ng-input > input {
+        font-size: $font-size-base !important;
+        line-height: 1.5;
+        color: $gray-800;
+        padding: 0;
+      }
+    }
+  }
+
+  // Single: cao cố định 34px; input absolute phủ value-container, placeholder in-flow → căn bằng flex
+  &.ng-select-single .ng-select-container {
+    height: 34px !important;
+
+    .ng-value-container {
+      height: 100%;
+      overflow: hidden;
+
+      .ng-placeholder {
+        position: static;
+        top: auto;
+        transform: none;
+      }
+
+      .ng-input {
+        top: 0 !important;
+        padding-left: 12px !important;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        height: 100%;
+
+        > input {
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  // Multiple: cao theo số dòng chip. Input nằm in-flow (flex: 1) nên KHÔNG thêm padding-left
+  // (value-container đã có 12px) — nếu không con trỏ bị thụt 24px.
+  // Chip 22px + padding 2×5px + border 2px = 34px → 1 dòng vẫn bằng form-control.
+  &.ng-select-multiple .ng-select-container {
+    height: auto;
+
+    .ng-value-container {
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 5px 0 5px 12px !important;
+
+      .ng-placeholder {
+        top: 50% !important;
+        left: 12px;
+        transform: translateY(-50%);
+      }
+
+      .ng-value {
+        display: inline-flex;
+        align-items: stretch;
+        margin: 0;
+        font-size: $font-size-sm !important;
+        line-height: 20px;
+        color: $blue-bright;
+        background-color: rgba($blue-bright, 0.08);
+        border: 1px solid rgba($blue-bright, 0.24);
+        border-radius: 4px;
+        overflow: hidden;
+
+        .ng-value-label,
+        div,
+        span {
+          font-size: $font-size-sm !important;
+          font-weight: 500;
+          line-height: 20px;
+        }
+
+        .ng-value-label {
+          padding: 0 6px;
+        }
+
+        .ng-value-icon {
+          padding: 0 5px;
+
+          &.left {
+            border-right: 1px solid rgba($blue-bright, 0.24);
+          }
+
+          &.right {
+            border-left: 1px solid rgba($blue-bright, 0.24);
+          }
+
+          &:hover {
+            background-color: rgba($blue-bright, 0.16);
+          }
+        }
+      }
+
+      .ng-input {
+        padding: 0 !important;
+        min-width: 40px;
+
+        > input {
+          height: 22px;
+          line-height: 22px;
+        }
+      }
+    }
+  }
+
+  &.ng-select-focused:not(.ng-select-opened) > .ng-select-container,
+  &.ng-select-opened > .ng-select-container {
+    background-color: $white !important;
+    border-color: $blue-bright !important;
+    box-shadow: 0 0 0 3px rgba($blue-bright, 0.15) !important;
+  }
+
+  &.ng-select-disabled > .ng-select-container {
+    background-color: $gray-100 !important;
+    color: $gray-400;
+  }
+
+  &.is-invalid .ng-select-container {
+    border-color: $red !important;
+  }
+
+  .ng-arrow-wrapper {
+    width: 20px;
+    padding-right: 8px;
+  }
+
+  .ng-clear-wrapper {
+    width: 16px;
+  }
+}
+
+.ng-dropdown-panel {
+  // appendTo="body" — phải nổi trên overlay modal chồng (editor 1050, modal con 1060).
+  z-index: 1070 !important;
+  font-size: $font-size-base !important;
+  border: 1px solid $gray-200 !important;
+  border-radius: $border-radius !important;
+  background: $white;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1) !important;
+  margin-top: 2px;
+
+  .ng-dropdown-header {
+    padding: 8px 12px;
+    border-bottom: 1px solid $gray-200;
+  }
+
+  .ng-dropdown-panel-items {
+    .ng-optgroup {
+      font-size: $font-size-sm !important;
+      font-weight: 500;
+      color: $gray-500;
+      padding: 6px 12px !important;
+    }
+
+    .ng-option {
+      font-size: $font-size-base !important;
+      line-height: 1.4;
+      padding: 6px 12px !important;
+      color: $gray-800;
+
+      div,
+      span {
+        font-size: $font-size-base !important;
+        font-weight: 400;
+      }
+
+      &.ng-option-child {
+        padding-left: 24px !important;
+      }
+
+      &.ng-option-marked {
+        background-color: rgba($blue-bright, 0.08);
+      }
+
+      &.ng-option-selected {
+        background-color: rgba($blue-bright, 0.12);
+
+        div,
+        span {
+          font-weight: 500;
+        }
+      }
+
+      &.ng-option-disabled {
+        color: $gray-400;
+      }
+    }
+  }
+}
+
+.ng-select.option-white-space-unset .ng-dropdown-panel .ng-dropdown-panel-items .ng-option,
+.ng-dropdown-panel.option-white-space-unset .ng-dropdown-panel-items .ng-option {
+  white-space: unset;
+}
+
+.btn {
+  height: 34px;
+  padding-inline: 12px;
+  font-size: $font-size-base;
+  font-weight: 500;
+  border-radius: $border-radius;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-sm {
+  height: 28px;
+  font-size: $font-size-sm;
+  border-radius: $border-radius-sm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+// iOS Safari auto-zooms into any focused field under 16px — bump text inputs on phones only.
+@media (max-width: 767.98px) {
+  input.form-control,
+  textarea.form-control,
+  .ng-select .ng-select-container .ng-input > input {
+    font-size: 14px !important;
+  }
+}

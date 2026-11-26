@@ -1,0 +1,126 @@
+@use 'styles/variable' as *;
+
+:host {
+  position: fixed;
+  z-index: 1049;
+  inset: 0 auto 0 0;
+  width: $sidebar-width;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden auto;
+  background-color: $sidebar-bg;
+  background-image:
+    radial-gradient(80% 40% at 100% 0%, rgba($white, 0.2) 0%, transparent 100%),
+    radial-gradient(60% 40% at 0% 100%, rgba($white, 0.1) 0%, transparent 100%),
+    linear-gradient(160deg, $sidebar-bg 0%, $sidebar-bg-end 100%);
+  box-shadow: 0 0 20px rgba($sidebar-bg, 0.2);
+  transition: width 0.2s ease;
+  scrollbar-width: thin;
+  scrollbar-color: rgba($white, 0.2) transparent;
+}
+
+// `<appvn-logo>` tự có border-bottom ngăn cách với menu.
+appvn-logo {
+  flex: 0 0 auto;
+}
+
+.menu-items {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 8px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: $border-radius;
+  color: $sidebar-text;
+  font-size: $font-size-md;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+
+  &:hover {
+    color: $white;
+    background-color: rgba($white, 0.08);
+  }
+
+  &.active {
+    color: $white;
+    background-color: rgba($white, 0.15);
+  }
+}
+
+.menu-icon {
+  width: 18px;
+  flex-shrink: 0;
+  font-size: 16px;
+  text-align: center;
+}
+
+.sidebar-footer {
+  flex-shrink: 0;
+  padding: 12px 8px;
+  border-top: 1px solid rgba($white, 0.1);
+}
+
+.toggle-btn {
+  width: 100%;
+  height: 44px;
+  border: 0;
+  border-radius: $border-radius;
+  background: transparent;
+  color: rgba($white, 0.6);
+  font-size: $font-size-xl;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+
+  &:hover {
+    color: $white;
+    background-color: rgba($white, 0.08);
+  }
+
+  &__icon {
+    transition: transform 0.3s ease;
+  }
+}
+
+@mixin mini {
+  width: $sidebar-width-collapsed;
+
+  .item-label {
+    display: none;
+  }
+
+  .menu-item {
+    justify-content: center;
+    padding: 12px 0;
+  }
+}
+
+:host(.collapsed) {
+  @include mini;
+
+  .toggle-btn__icon {
+    transform: rotate(180deg);
+  }
+}
+
+// < lg: luôn icon-only (chưa có drawer mobile), nút thu gọn không còn tác dụng.
+@media (max-width: 991.98px) {
+  :host {
+    @include mini;
+  }
+
+  .sidebar-footer {
+    display: none;
+  }
+}

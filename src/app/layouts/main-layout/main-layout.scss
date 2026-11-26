@@ -1,0 +1,21 @@
+@use 'styles/variable' as *;
+
+:host {
+  display: block;
+  height: 100vh;
+}
+
+.content {
+  height: 100%;
+  overflow-y: auto;
+  padding-left: $sidebar-width;
+  transition: padding-left 0.2s ease;
+
+  &.collapsed {
+    padding-left: $sidebar-width-collapsed;
+  }
+
+  @media (max-width: 991.98px) {
+    padding-left: $sidebar-width-collapsed;
+  }
+}
