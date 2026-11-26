@@ -4,5 +4,5 @@ export const environment = {
   // apiModule: 'http://localhost:6900/api',
   apiModule: 'https://dev.smax.app/api',
   urlDomain: 'https://dev.smax.app',
-  module: 'crm',
+  module: 'automation'
 };
